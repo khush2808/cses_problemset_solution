@@ -1,14 +1,14 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-
+ 
 typedef long long ll;
 #define pb push_back
 #define pi pair<int, int>
 #define f first
 #define mp make_pair
 #define s second
-
+ 
 ll dp[100001][101];
 const ll MOD = (10e8) + 7;
 int main() {
