@@ -9,6 +9,7 @@
 #define F first
 #define S second
 #define ii pair<ll,ll>
+#define vin int n;cin>>n;vector<int> arr(n);for(auto&i:arr)cin>>i;
 #define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 using namespace std;
 const int mod = 1e9+7;
@@ -53,8 +54,6 @@ ll powmod(ll a,ll b){
 	return ans;
 }
 void solve(){
-
-		
 		
 }
 int main() {
