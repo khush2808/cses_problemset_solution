@@ -1,168 +1,59 @@
-#include <bits/stdc++.h>
-#define ll long long
+//BeginCodeSnip{C++ Short Template}
+#include <bits/stdc++.h> // see /general/running-code-locally
+using namespace std;
+
+using ll = long long;
+
+using vi = vector<int>;
 #define pb push_back
-#define cy cout << "YES" << endl;
-#define cn cout << "NO" << endl;
-#define c1 cout << "-1\n"
-#define all(x) x.begin(), x.end()
-#define re(x) x.rbegin(), x.rend()
-#define pb push_back
-#define F first
-#define S second
-#define ii pair<ll, ll>
 #define all(x) begin(x), end(x)
 #define sz(x) (int) (x).size()
-#define vi(x) vector<x>
-#define vin           \
-	int n;              \
-	cin >> n;           \
-	vector<int> arr(n); \
-	for (auto &i : arr) \
-		cin >> i;
-#define IOS                \
-	ios::sync_with_stdio(0); \
-	cin.tie(0);              \
-	cout.tie(0);
-using namespace std;
-const int mod = 1e9 + 7;
-#ifndef ONLINE_JUDGE
-#define debug(x)     \
-	cerr << #x << " "; \
-	_print(x);         \
-	cerr << endl;
-#else
-#define debug(x)
-#endif
 
-void _print(long long t) { cerr << t; }
-void _print(int t) { cerr << t; }
-void _print(string t) { cerr << t; }
-void _print(char t) { cerr << t; }
-void _print(long double t) { cerr << t; }
-void _print(double t) { cerr << t; }
-void _print(unsigned long long t) { cerr << t; }
+using pi = pair<int,int>;
+#define f first
+#define s second
+#define mp make_pair
 
-template <class T, class V>
-void _print(pair<T, V> p);
-template <class T>
-void _print(vector<T> v);
-template <class T>
-void _print(set<T> v);
-template <class T, class V>
-void _print(map<T, V> v);
-template <class T>
-void _print(multiset<T> v);
-template <class T, class V>
-void _print(pair<T, V> p)
-{
-	cerr << "{";
-	_print(p.first);
-	cerr << ",";
-	_print(p.second);
-	cerr << "}";
-}
-template <class T>
-void _print(vector<T> v)
-{
-	cerr << "[ ";
-	for (T i : v)
-	{
-		_print(i);
-		cerr << " ";
+void setIO(string name = "") {
+	cin.tie(0)->sync_with_stdio(0); // see /general/fast-io
+	if (sz(name)) {
+		freopen((name + ".in").c_str(), "r", stdin); // see /general/input-output
+		freopen((name + ".out").c_str(), "w", stdout);
 	}
-	cerr << "]";
 }
-template <class T>
-void _print(set<T> v)
-{
-	cerr << "[ ";
-	for (T i : v)
-	{
-		_print(i);
-		cerr << " ";
-	}
-	cerr << "]";
-}
-template <class T>
-void _print(multiset<T> v)
-{
-	cerr << "[ ";
-	for (T i : v)
-	{
-		_print(i);
-		cerr << " ";
-	}
-	cerr << "]";
-}
-template <class T, class V>
-void _print(map<T, V> v)
-{
-	cerr << "[ ";
-	for (auto i : v)
-	{
-		_print(i);
-		cerr << " ";
-	}
-	cerr << "]";
-}
+//EndCodeSnip
 
-ll gcdExtended(ll a, ll b, ll *x, ll *y)
-{
+int main() {
+	int people, max_weight;
+	cin >> people >> max_weight;
+	vector<int> weight(people);
+	for (int &i : weight) cin >> i;
 
-	if (a == 0)
-	{
-		*x = 0, *y = 1;
-		return b;
+	vector<pair<int, int>> dp(1 << people, {people + 1, max_weight + 1});
+	dp[0] = make_pair(1, 0);
+	/*
+	 * Loop through all bitmasks.
+	 * The bitmasks represent whether each person has used the elevator or not.
+	 * If the ith bit is set, this means the ith person has used the elevator.
+	 */
+	for (int mask = 1; mask < (1 << people); mask++) {
+		for (int i = 0; i < people; i++)
+			// The ith person has used the elevator.
+			if (mask & (1 << i)) {
+				auto prev = dp[mask ^ (1 << i)];
+				int num_rides = prev.first;
+				int total_weight = prev.second;
+				// We need to use a new ride.
+				if (total_weight + weight[i] <= max_weight) total_weight += weight[i];
+				else {
+					// Add the weight of the ith person to the current ride.
+					num_rides++;
+					total_weight = weight[i];
+				}
+				// Update if it is better than the original.
+				dp[mask] = min(dp[mask], make_pair(num_rides, total_weight));
+			}
 	}
-
-	ll x1, y1;
-	ll gcd = gcdExtended(b % a, a, &x1, &y1);
-	*x = y1 - (b / a) * x1;
-	*y = x1;
-
-	return gcd;
-}
-ll modInverse(ll A, ll M)
-{
-	ll x, y;
-	ll g = gcdExtended(A, M, &x, &y);
-	ll res = (x % M + M) % M;
-	return res;
-}
-ll bpow(ll a, ll b)
-{
-	ll ans = 1;
-	while (b)
-	{
-		if (b & 1)
-			ans *= a;
-		a *= a;
-		b >>= 1;
-	}
-	return ans;
-}
-ll powmod(ll a, ll b)
-{
-	ll ans = 1;
-	while (b)
-	{
-		if (b & 1)
-			ans = (ans * a) % mod;
-		a = (a * a) % mod;
-		b >>= 1;
-	}
-	return ans;
-}
-void solve()
-{
-	
-}
-int main()
-{
-	IOS int t;
-	cin >> t;
-	while (t--)
-	{
-		solve();
-	}
+	// Result when all people have used the elevator.
+	cout << dp[(1 << people) - 1].first;
 }
