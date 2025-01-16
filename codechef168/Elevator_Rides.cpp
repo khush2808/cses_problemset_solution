@@ -6,13 +6,9 @@
 #define c1 cout << "-1\n"
 #define all(x) x.begin(), x.end()
 #define re(x) x.rbegin(), x.rend()
-#define pb push_back
 #define F first
 #define S second
 #define ii pair<ll, ll>
-#define all(x) begin(x), end(x)
-#define sz(x) (int) (x).size()
-#define vi(x) vector<x>
 #define vin           \
 	int n;              \
 	cin >> n;           \
@@ -153,9 +149,14 @@ ll powmod(ll a, ll b)
 	}
 	return ans;
 }
+
 void solve()
 {
-	
+	int n,x;
+	cin>>n>>x;
+	vector<int> arr(n);
+	for(auto &i:arr)cin>>i;
+	auto f = [&](int mask)
 }
 int main()
 {

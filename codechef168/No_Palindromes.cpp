@@ -6,13 +6,9 @@
 #define c1 cout << "-1\n"
 #define all(x) x.begin(), x.end()
 #define re(x) x.rbegin(), x.rend()
-#define pb push_back
 #define F first
 #define S second
 #define ii pair<ll, ll>
-#define all(x) begin(x), end(x)
-#define sz(x) (int) (x).size()
-#define vi(x) vector<x>
 #define vin           \
 	int n;              \
 	cin >> n;           \
@@ -33,7 +29,6 @@ const int mod = 1e9 + 7;
 #else
 #define debug(x)
 #endif
-
 void _print(long long t) { cerr << t; }
 void _print(int t) { cerr << t; }
 void _print(string t) { cerr << t; }
@@ -155,11 +150,72 @@ ll powmod(ll a, ll b)
 }
 void solve()
 {
+	int n;
+	cin>>n;
+	string s;
+	cin>>s;
+	map<char,int> m;
 	
+	for(auto i:s)m[i]++;
+	if(m.size()==1){
+		cout<<-1<<'\n';
+		return;
+	}
+	char first = '$',second='$';
+	int cnt = 0;
+	for(auto i:m){
+		if(i.second&1)cnt++;
+	}
+	if(cnt>=2){
+		cout<<0<<'\n';
+		return;
+	}
+	string s;
+	int fc,sc;
+	if(cnt==1){
+
+	for(auto i:m){
+		if(i.second==0)continue;
+		if((i.second&1) and i.second>=3){
+first = i.first;fc=2;break;}
+		else {
+			first=i.first;
+			fc=1;
+			break;
+		}
+		
+		
+	}
+	string x(fc,first);
+	cout<<fc<<'\n';
+	cout<<x<<'\n';}
+	else{
+
+for(auto i:m){
+		if(i.second==0)continue;
+		if((i.second&1) and i.second>=3){
+first = i.first;fc=2;break;}
+		else {
+			first=i.first;
+			fc=1;
+			break;
+		}
+		
+		
+	}
+	string x(fc,first);
+	if(s[n-1]==first){
+		if(s[n-2]==first){
+			string y  ;
+		}
+	}
+	
+}
 }
 int main()
 {
-	IOS int t;
+	IOS;
+	 int t;
 	cin >> t;
 	while (t--)
 	{
