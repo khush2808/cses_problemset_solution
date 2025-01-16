@@ -1,60 +1,80 @@
-/*
-Problem Name: Counting Numbers
-Problem Link: https://cses.fi/problemset/task/2220
-Author: Sachin Srivastava (mrsac7)
-*/
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
+typedef long long ll;
 
-#define int long long
-#define endl '\n'
+// dp array to memoize results of subproblems
+ll dp[20][10][2][2];
 
-int xpow(int x, unsigned int y){
-    int res=1;
-    while(y>0){
-        if (y&1) res= (res*x); y=y>>1; x=(x*x);
+// Function to calculate the count of valid numbers using Digit DP
+ll mem(string s, ll curr, ll prev_digit, ll leading_zero, ll tight)
+{
+    // Base case: entire number processed
+    if (curr == 0)
+    {
+        return 1;
     }
-    return res;
+
+    // Check if result for the current state is already computed
+    if (dp[curr][prev_digit][leading_zero][tight] != -1)
+        return dp[curr][prev_digit][leading_zero][tight];
+
+    // Determine the limit for the current position based on tightness
+    ll limit;
+    if (tight == 0)
+    {
+        limit = 9;
+    }
+    else
+    {
+        ll sz = s.size();
+        limit = s[sz - curr] - 48;
+    }
+
+    ll countNumbers = 0;
+
+    // Iterate through possible digits for the current position
+    for (ll curr_digit = 0; curr_digit <= limit; curr_digit++)
+    {
+        // Check validity based on constraints
+        if (leading_zero == 0 && (curr_digit == prev_digit))
+        {
+            continue;
+        }
+
+        // Update state parameters based on the current digit
+        ll new_leading_zero = (leading_zero == 1 && curr_digit == 0) ? 1 : 0;
+        ll new_tight = (curr_digit == limit && tight == 1) ? 1 : 0;
+
+        // Recursively call the mem function for the next position
+        countNumbers += mem(s, curr - 1, curr_digit, new_leading_zero, new_tight);
+    }
+
+    // Update the memoization table with the count of valid numbers for the current state
+    dp[curr][prev_digit][leading_zero][tight] = countNumbers;
+  
+    return dp[curr][prev_digit][leading_zero][tight];
 }
 
-int solve(int x) {
-	if (x < 0) return 0;
-	if (x == 0) return 1;
-	int flag = 1;
-	while(flag) {
-		flag = 0;
-		for (int i = log10(x) - 1; i >= 0; i--) {
-			int m = xpow(10, i);
-			if (x/(m*10)%10 == x/m%10) {
-				x = (x/m - 1)*m + (m-1);
-				flag = 1;
-			}
-		}
-	}
-	int n = log10(x)+1;
-	int dp[n+1][2] = {0}; //dp[n][0] = free, dp[n][1] = contrained
-	dp[0][0] = 1, dp[0][1] = 1;
-	int ans = 1;
-	int m = 1;
-	for (int i = 1; i < n; i++, m *= 10) {
-		dp[i][0] = xpow(9, i);
-		dp[i][1] = (x/m%10)*dp[i-1][0] + dp[i-1][1];
-		if (x/m%10 > x/(m*10)%10) dp[i][1] -= dp[i-1][0];
-		ans += dp[i][0];
-	}
-	dp[n][1] = (x/m%10 - 1)*dp[n-1][0] + dp[n-1][1];
-   	return ans + dp[n][1];
-   	
-}
+// Driver Code
+int main()
+{
+    ll a,b;
+		cin>>a>>b;
+    
+    ll count1 = 0;
+    // Initialize dp table with -1
+    memset(dp, -1, sizeof(dp));
 
-signed main(){
-    ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0);
-    #ifdef LOCAL
-    freopen("input.txt", "r" , stdin);
-    freopen("output.txt", "w", stdout);
-    #endif
-    
-    int x, y; cin>>x>>y;
-    cout<<solve(y) - solve(x-1);
-    
+    // Calculate count of valid numbers from [0, a-1]
+    string str1 = to_string(a - 1);
+    if (a != 0)
+        count1 = mem(str1, str1.size(), -1, 1, 1);
+
+    // Calculate count of valid numbers from [0, b]
+    memset(dp, -1, sizeof(dp));
+    string str2 = to_string(b);
+    ll count2 = mem(str2, str2.size(), -1, 1, 1);
+
+    // Output the difference between count of valid numbers from [0, b] and [0, a-1]
+    cout << count2 - count1;
 }
