@@ -164,7 +164,7 @@ void solve()
 	int n, m;
 	cin >> n >> m;
 	vector<pair<int, int>> adj[n + 1];
-	vector<int> dist(n + 1, INT_MAX);
+	vector<int> dist(n + 1, LLONG_MAX);
 	for (int i = 0; i < m; i++)
 	{
 		int u, v, w;
