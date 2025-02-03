@@ -1,101 +1,82 @@
+
 #include<bits/stdc++.h>
-#include<functional>
-#define int ll
-#define ll long long
+using namespace std;
+template<typename... T>
+void see(T&... args) { ((cin >> args), ...);}
+template<typename... T>
+void put(T&&... args) { ((cout << args << " "), ...);}
+template<typename... T>
+void putl(T&&... args) { ((cout << args << " "), ...); cout<<'\n';}
+#define error(args...) { string _s = #args; replace(_s.begin(), _s.end(), ',', ' '); stringstream _ss(_s); istream_iterator<string> _it(_ss); err(_it, args); }
+void err(istream_iterator<string> it) {}
+template<typename T, typename... Args>
+void err(istream_iterator<string> it, T a, Args... args) {cerr << *it << "=" << a << ", "; err(++it, args...);}
+#define int long long
 #define pb push_back
-#define cy cout<<"YES"<<endl;
-#define cn cout<<"NO"<<endl;
-#define c1 cout<<"-1\n"
-#define all(x) x.begin(),x.end()
-#define re(x) x.rbegin(),x.rend()
 #define F first
 #define S second
-#define ii pair<ll,ll>
-#define vin int n;cin>>n;vector<int> arr(n);for(auto&i:arr)cin>>i;
-#define sz(x) (int) (x).size()
-#define vi(x) vector<x>
-#define IOS ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-using namespace std;
-const int mod = 1e9+7;
-#ifndef ONLINE_JUDGE
-#define debugs(x) cerr << #x << " ";_print(x);cerr<< ' ';
-#define debug(x,y,z,w) debugs(x) debugs(y) debugs(z) debugs(w)
-#define debug(x,y,z) debugs(x) debugs(y) debugs(z)
-#define debug(x,y) debugs(x ) debugs(y)
-#define debug(x,y) debugs(x ) debugs(y)
-#define debug(x) cerr << #x <<" "; _print(x); cerr << endl;
-#else
-#define debug(x)
-#endif
+#define ll long long
+#define ull unsigned long long
+#define ld long double
+#define pii pair<int,int>
+#define vi vector<int>
+#define vii vector<pii>
+#define vc vector
+#define L cout<<'\n';
+#define E cerr<<'\n';
+#define all(x) x.begin(),x.end()
+#define rep(i,a,b) for (int i=a; i<b; ++i)
+#define rev(i,a,b) for (int i=a; i>b; --i)
+#define IOS ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+#define setpr(x) cout<<setprecision(x)<<fixed
+#define sz size()
+#define seea(a,x,y) for(int i=x;i<y;i++){cin>>a[i];}
+#define seev(v,n) for(int i=0;i<n;i++){int x; cin>>x; v.push_back(x);}
+#define sees(s,n) for(int i=0;i<n;i++){int x; cin>>x; s.insert(x);}
+const ll inf = INT_MAX;
+const ld ep = 0.0000001;
+const ld pi = acos(-1.0);
+const ll md = 1000000007;
 
-void _print(long long t) {cerr << t;}
-void _print(string t) {cerr << t;}
-void _print(char t) {cerr << t;}
-void _print(long  double t) {cerr << t;}
-void _print(double t) {cerr << t;}
-void _print(unsigned long long t) {cerr << t;}
-
-template <class T, class V> void _print(pair <T, V> p);
-template <class T> void _print(vector <T> v);
-template <class T> void _print(set <T> v);
-template <class T, class V> void _print(map <T, V> v);
-template <class T> void _print(multiset <T> v);
-template <class T, class V> void _print(pair <T, V> p) {cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}";}
-template <class T> void _print(vector <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
-template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
-template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
-template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
-
-ll gcdExtended(ll a, ll b, ll* x, ll* y)
-{
-
-		if (a == 0) {
-				*x = 0, *y = 1;
-				return b;
-		}
-
-		ll x1, y1;
-		ll gcd = gcdExtended(b % a, a, &x1, &y1);
-		*x = y1 - (b / a) * x1;
-		*y = x1;
-
-		return gcd;
-}
-ll modInverse(ll A, ll M) {
-		ll x, y;
-		ll g = gcdExtended(A, M, &x, &y);
-				ll res = (x % M + M) % M;
-			 return res;
-		
-}
-ll bpow(ll a,ll b){
-ll ans =1;
-while(b){
-if(b&1)ans*=a;
-a*=a;
-b>>=1;
-}
-return ans;
-}
-ll powmod(ll a,ll b){
-		ll ans =1;
-while(b){
-if(b&1)ans= (ans*a)%mod;
-a=(a*a)%mod;
-b>>=1;
-}
-return ans;
-}
+const int N = 505;
+int dis[N][N];
 void solve(){
-int n,m,q;
-vector<int> adj[n+1];
-vector<int> dist(n+1)
-}
-signed main() {
-IOS
-int t;
-cin>>t;
-while(t--){
-solve();
-}
+    int n,m,q; see(n,m,q);
+    int M = 1000000000000;
+    rep(i,1,n+1) rep(j,1,n+1) dis[i][j]=M;
+    rep(i,0,m){
+        int u,v,w; see(u,v,w);
+        dis[u][u]=0, dis[v][v]=0;
+        dis[u][v]=min(dis[u][v],w), dis[v][u]=min(dis[u][v],w);
+    }
+    rep(k,1,n+1){
+        rep(i,1,n+1){
+            rep(j,1,n+1){
+                dis[i][j] = min(dis[i][j],dis[i][k]+dis[k][j]);
+            }
+        }
+    }
+    rep(i,0,q){
+        int a,b; see(a,b);
+				if(a==b)putl(0);
+        else if (dis[a][b]<M)putl(dis[a][b]);
+        else putl(-1);
+    }
+}    
+signed main(){
+    IOS;
+    #ifdef LOCAL
+    freopen("input.txt", "r" , stdin);
+    freopen("output.txt", "w", stdout);
+    #endif
+    int t=1;
+    //cin>>t;
+    while(t--){
+        solve();
+        //cout<<'\n';
+    }
+    #ifdef LOCAL
+    clock_t tStart = clock();
+    cerr<<fixed<<setprecision(10)<<"\nTime Taken: "<<(double)(clock()- tStart)/CLOCKS_PER_SEC<<endl;
+    #endif
 }
