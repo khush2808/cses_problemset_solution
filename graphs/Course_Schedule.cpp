@@ -88,6 +88,40 @@ b>>=1;
 return ans;
 }
 void solve(){
+int n,m;
+cin>>n>>m;
+vector<int> adj[n];
+vector<int> in(n,0);
+for(int i  =0;i<m;i++){
+	int u,v;
+	cin>>u>>v;
+	u--;
+	v--;
+	adj[u].push_back(v);
+	in[v]++;
+}
+queue<int> q;
+
+for(int i = 0;i<n;i++){
+	if(in[i]==0){q.push(i);}
+}
+vector<int> ans;
+while(!q.empty()){
+	int src = q.front();
+	q.pop();
+	ans.push_back(src);
+	for(auto i:adj[src]){
+		in[i]--;
+		if(in[i]==0){
+			q.push(i);
+		}
+	}
+}
+if(ans.size()==n){
+	for(auto i:ans)cout<<i+1<<' ';
+}
+else cout<<"IMPOSSIBLE";
+
 
 }
 signed main() {
