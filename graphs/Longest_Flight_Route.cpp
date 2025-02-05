@@ -1,56 +1,86 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-const ll NEG = -1e15;
-#define fastio ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
-#define max3(a, b, c) max(max(a, b), c)
-#define max4(a, b, c, d) max(max(a, b), max(c, d))
-#define fr(i, n) for (ll i = 0; i < n; i++)
-ll gcd(ll a, ll b)
-{
-    return b == 0 ? a : gcd(b, a % b);
+#define ll long long
+#define fastio() ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+#define MOD1 998244353
+#define INF 1e18
+#define pb push_back
+#define ppb pop_back
+#define ff first
+#define ss second
+#define PI 3.141592653589793238462
+#define set_bits __builtin_popcountll
+#define sz(x) ((int)(x).size())
+#define all(x) (x).begin(), (x).end()
+#define fori(i,a,b) for(int i=a; i<b;i++)
+#define Y { cout <<"YES"<< endl;}
+#define NN { cout <<"NO"<< endl;}
+
+const int mod = 1e9+7;
+
+
+//function to check whether nth node is reachable
+void mark_dfs(ll node, vector<ll> &vis, vector<ll> adj[]){
+    vis[node] = 1;
+    for(auto child : adj[node]){
+        if(!vis[child]){
+            mark_dfs(child,vis,adj);
+        }
+    }
 }
+
+//function to return the max_len and store the path using child array
+ll dfs(ll node, vector<ll> &dp, vector<ll> adj[],int n, vector<ll> &child){
+    //base condition
+    if(node==n) return dp[n] = 1;
+    //memoization step
+    if(dp[node]!=-1) return dp[node];
+    ll len = 0;
+    //standard dfs approach
+    for(auto v : adj[node]){
+        ll tmp = dfs(v,dp,adj,n,child);
+        //temp_len checks whether the len is coming from the nth node or not
+        ll temp_len = tmp==0?0:1+tmp;
+        if(temp_len>len){
+            // updating the child node and len
+            child[node] = v;
+            len = temp_len;
+        }
+    }
+    //dp assignment step
+    return dp[node] = len;
+}
+ 
 int main(){
-    fastio;
-    ll n, m;
-    cin >> n >> m;
-    vector<vector<ll>> adj(n+1);
-    for(ll i = 0; i < m; i++){
-        ll u, v;
-        cin >> u >> v;
-        adj[u].push_back(v);
+    ll n,m;
+    cin>>n>>m; 
+    vector<ll> adj[n+1];
+    fori(i,0,m){
+        ll x,y;
+        cin>>x>>y;
+        adj[x].pb(y);
     }
-    vector<ll> dp(n+1, NEG);      // longest path length from node to destination
-    vector<ll> parent(n+1, -1);   // next node on the longest path
-    vector<bool> vis(n+1, false);
-    ll dest = n;
-    function<ll(ll)> dfs = [&](ll node) -> ll{
-        if(vis[node]) return dp[node];
-        vis[node] = true;
-        if(node == dest){
-            dp[node] = 1;
-            return 1;
+
+    vector<ll> vis(n+1,0);
+    //function call to check if nth node is reachable
+    mark_dfs(1,vis,adj);
+    if(!vis[n]) cout<<"IMPOSSIBLE\n";
+    else{
+        vector<ll> dp(n+1,-1);
+        vector<ll> child(n+1,0);
+        ll len = dfs(1,dp,adj,n,child);
+        int node = 1;
+        vector<ll> path;
+        //forward traversal to print the path.
+        while(node){
+            path.pb(node);
+            node = child[node];
         }
-        for(auto v: adj[node]){
-            ll candidate = dfs(v);
-            if(candidate != NEG && candidate + 1 > dp[node]){
-                dp[node] = candidate + 1;
-                parent[node] = v;
-            }
+        cout<<len<<endl;
+        for(auto it : path){
+            cout<<it<<" ";
         }
-        return dp[node];
-    };
-    ll ans = dfs(1);
-    if(ans < 0){
-        cout << "IMPOSSIBLE\n";
-        return 0;
     }
-    cout << ans << "\n";
-    ll cur = 1;
-    while(cur != dest){
-        cout << cur << " ";
-        cur = parent[cur];
-    }
-    cout << dest << "\n";
     return 0;
+
 }
